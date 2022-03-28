@@ -1,12 +1,13 @@
-FROM nvidia/cuda:10.2-devel-ubuntu16.04
+FROM nvidia/cuda:10.2-devel-ubuntu18.04
 
-# Python3.6 stuff
+# Python3.8 stuff
 RUN apt-get update && \
   apt-get install -y software-properties-common && \
   add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 
-RUN apt-get install -y build-essential python3.6 python3.6-dev python3-pip python3.6-venv
+#RUN apt-get install python3.8
+RUN apt-get install -y build-essential python3.8 python3.8-dev python3-pip python3.8-venv
 RUN apt-get install -y git
 
 RUN git clone https://github.com/ewanbarr/dedisp.git && \
@@ -21,33 +22,49 @@ RUN git clone https://github.com/ewanbarr/peasoup.git && \
     make -j 32 && \
     make install
 
+
+# Circular Orbit Template-bank Peasoup
+RUN git clone https://github.com/vishnubk/3D_peasoup.git && \
+    cd 3D_peasoup && \
+    git checkout trapum &&\
+    make clean && \
+    make -j 32 && \
+    make install
+
+# Elliptical Orbit Template-bank Peasoup
+RUN git clone https://github.com/vishnubk/5D_Peasoup.git && \
+    cd 5D_Peasoup && \
+    git checkout fast_bt_resampler_working &&\
+    make clean && \
+    make -j 32 && \
+    make install
+
 # update pip
-RUN python3.6 -m pip install pip --upgrade
-RUN python3.6 -m pip install wheel
+RUN python3.8 -m pip install pip --upgrade
+RUN python3.8 -m pip install wheel
 
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
-RUN pip install numpy matplotlib 
+RUN pip install numpy matplotlib pandas 
   
 RUN ldconfig /usr/local/lib
 
 
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential git curl wget make cmake fftw3 fftw3-dev pkg-config libomp-dev libmysqlclient-dev numactl
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential git curl wget make cmake fftw3 fftw3-dev pkg-config libomp-dev libmysqlclient-dev numactl vim
 
 
 
 # update pip
-RUN python3.6 -m pip install pip --upgrade
-RUN python3.6 -m pip install wheel
+RUN python3.8 -m pip install pip --upgrade
+RUN python3.8 -m pip install wheel
 
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
-RUN pip install numpy matplotlib 
+RUN pip install numpy matplotlib pandas
 
 # Install sigpyproc3
 WORKDIR /software/
-RUN pip install git+https://github.com/pravirkr/sigpyproc3
-
+RUN pip install -U git+https://github.com/FRBs/sigpyproc3
 
 # TRAPUM utilities
 
@@ -97,6 +114,8 @@ RUN pip3 install xmljson
 
 # Extras
 RUN apt-get -y install libgfortran3
+WORKDIR /software/
+
 
 WORKDIR /software/trapum-pipeline-wrapper/pipelines/trapum_search_pipeline
 
