@@ -11,7 +11,7 @@ RUN apt-get update
 RUN apt-get install -y build-essential python3.8 python3.8-dev python3-pip python3.8-venv
 RUN apt-get install -y git
 
-RUN https://github.com/vishnubk/dedisp.git && \
+RUN git clone https://github.com/vishnubk/dedisp.git && \
     cd dedisp &&\
     git checkout arch61 &&\
     make -j 32 && \
