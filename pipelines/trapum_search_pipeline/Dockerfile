@@ -1,3 +1,4 @@
+FROM --platform=linux/amd64 amazonlinux:2018.03
 FROM nvidia/cuda:10.2-devel-ubuntu18.04
 
 # Python3.8 stuff
@@ -10,13 +11,13 @@ RUN apt-get update
 RUN apt-get install -y build-essential python3.8 python3.8-dev python3-pip python3.8-venv
 RUN apt-get install -y git
 
-RUN git clone https://github.com/ewanbarr/dedisp.git && \
+RUN https://github.com/vishnubk/dedisp.git && \
     cd dedisp &&\
     git checkout arch61 &&\
     make -j 32 && \
     make install
 
-RUN git clone https://github.com/ewanbarr/peasoup.git && \
+RUN git clone https://github.com/vishnubk/peasoup.git && \
     cd peasoup && \
     git checkout dedisp_gulping &&\
     make -j 32 && \
